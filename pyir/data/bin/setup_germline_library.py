@@ -24,6 +24,19 @@ SPECIES = [{
         'J': ['TRAJ', 'TRBJ'],
         'D': ['TRBD']
     }
+}, {
+    'name': 'shark',
+    'imgt_name': 'Chondrichthyes',
+    'ig': {
+        'V': ['IGHV','IGKV', 'IGLV'],
+        'J': ['IGHJ', 'IGKJ', 'IGLJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {
+        'V': ['TRAV', 'TRBV'],
+        'J': ['TRAJ', 'TRBJ'],
+        'D': ['TRBD']
+    }
 },
     {
     'name': 'pig',
