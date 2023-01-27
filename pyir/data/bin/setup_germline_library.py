@@ -9,6 +9,8 @@ import subprocess
 from subprocess import run
 import shutil
 
+
+
 SPECIES = [{
     'name': 'human',
     'imgt_name': 'Homo_sapiens',
@@ -22,7 +24,49 @@ SPECIES = [{
         'J': ['TRAJ', 'TRBJ'],
         'D': ['TRBD']
     }
-}, {
+},
+    {
+    'name': 'pig',
+    'imgt_name': 'Sus_scrofa',
+    'ig': {
+        'V': ['IGHV','IGKV','IGLV'],
+        'J': ['IGHJ', 'IGKJ','IGLJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {
+        'V': ['TRBV'],
+        'J': ['TRBJ'],
+        'D': ['TRBD']
+    }
+},
+    {
+    'name': 'cow',
+    'imgt_name': 'Bos_taurus',
+    'ig': {
+        'V': ['IGHV','IGKV','IGLV'],
+        'J': ['IGHJ', 'IGKJ','IGLJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {
+        'V': ['TRBV','TRDV','TRAV'],
+        'J': ['TRBJ','TRDJ','TRAJ'],
+        'D': ['TRBD','TRDD','TRBD']
+    }
+},
+    {
+    'name': 'camel',
+    'imgt_name': 'Camelus_dromedarius',
+    'ig': {
+        'V': ['IGKV'],
+        'J': ['IGKJ'],
+    },
+    'tcr': {
+        'V': ['TRBV','TRDV','TRAV','TRGV'],
+        'J': ['TRBJ','TRGJ'],
+        'D': ['TRBD']
+    }
+},
+    {
     'name': 'mouse',
     'imgt_name': 'Mus_musculus',
     'ig': {
@@ -34,6 +78,51 @@ SPECIES = [{
         'V': ['TRAV', 'TRBV', 'TRDV', 'TRGV'],
         'J': ['TRAJ', 'TRBJ', 'TRDJ', 'TRGJ'],
         'D': ['TRBD', 'TRDD']
+    }
+}, {
+    'name': 'chicken',
+    'imgt_name': 'Gallus_gallus',
+    'ig': {
+        'V': ['IGHV', 'IGLV'],
+        'J': ['IGHJ', 'IGLJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {}
+}, {
+    'name': 'macaque',
+    'imgt_name': 'Macaca_fascicularis',
+    'ig': {
+        'V': ['IGHV'],
+        'J': ['IGHJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {
+        'V': ['TRBV'],
+        'J': ['TRBJ'],
+        'D': ['TRBD']
+    }
+},  {
+    'name': 'rhesus',
+    'imgt_name': 'Macaca_mulatta',
+    'ig': {
+        'V': ['IGHV', 'IGKV', 'IGLV'],
+        'J': ['IGHJ', 'IGKJ', 'IGLJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {
+        'V': ['TRAV', 'TRBV', 'TRDV', 'TRGV'],
+        'J': ['TRAJ', 'TRBJ', 'TRDJ', 'TRGJ'],
+        'D': ['TRBD', 'TRDD']
+    }
+}, {
+    'name': 'alpaca',
+    'imgt_name': 'Vicugna_pacos',
+    'ig': {
+        'V': ['IGHV'],
+        'J': ['IGHJ'],
+        'D': ['IGHD'],
+    },
+    'tcr': {
     }
 }, {
     'name': 'rabbit',
@@ -126,6 +215,7 @@ def get_local_data():
     shutil.copytree(path.join(args.basedir,'crowelab_data','prot'), path.join(args.outdir, 'prot'))
 
 def get_imgt_data():
+   
     for species in SPECIES:
         for gene_locus in ['ig', 'tcr']:
             outdir_subfolder = 'Ig' if gene_locus == 'ig' else 'TCR'
