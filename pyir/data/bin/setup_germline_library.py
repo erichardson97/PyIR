@@ -33,9 +33,6 @@ SPECIES = [{
         'D': ['IGHD'],
     },
     'tcr': {
-        'V': ['TRAV', 'TRBV'],
-        'J': ['TRAJ', 'TRBJ'],
-        'D': ['TRBD']
     }
 },
     {
