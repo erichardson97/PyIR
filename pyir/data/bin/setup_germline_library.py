@@ -28,8 +28,8 @@ SPECIES = [{
     'name': 'shark',
     'imgt_name': 'Chondrichthyes',
     'ig': {
-        'V': ['IGHV','IGKV', 'IGLV'],
-        'J': ['IGHJ', 'IGKJ', 'IGLJ'],
+        'V': ['IGHV'],
+        'J': ['IGHJ'],
         'D': ['IGHD'],
     },
     'tcr': {
