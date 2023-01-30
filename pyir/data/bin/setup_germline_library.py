@@ -264,6 +264,7 @@ def get_imgt_data():
 
                 print(result.stdout)
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + 'aa' + '_' + gene + '.fasta')
+                gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
                 imgt_name = species['imgt_name'].replace('_','+')
                 with open(gene_file, 'w') as fasta_out:
                     for locus in species[gene_locus][gene]:
