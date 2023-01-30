@@ -8,7 +8,7 @@ import urllib.request
 import subprocess
 from subprocess import run
 import shutil
-from .write_aa_fasta import download_imgt, filter_write
+
 
 
 SPECIES = [{
