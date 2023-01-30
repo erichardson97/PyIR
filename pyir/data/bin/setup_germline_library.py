@@ -263,6 +263,16 @@ def get_imgt_data():
                              universal_newlines=True)
 
                 print(result.stdout)
+                
+                result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'prot', '-hash_index', '-parse_seqids',
+                     '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             universal_newlines=True)
+
+                print(result.stdout)
+                
+                
+                
+                
 
 get_local_data()
 get_imgt_data()
