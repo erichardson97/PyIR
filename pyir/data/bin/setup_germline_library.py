@@ -8,7 +8,7 @@ import urllib.request
 import subprocess
 from subprocess import run
 import shutil
-
+from .write_aa_fasta import download_imgt, filter_write
 
 
 SPECIES = [{
@@ -257,13 +257,35 @@ def get_imgt_data():
                                     write_out = False
                             elif write_out:
                                 fasta_out.write(line.replace('.',''))
-
+                ## aas.
                 result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'nucl', '-hash_index', '-parse_seqids',
                      '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              universal_newlines=True)
 
                 print(result.stdout)
-                
+                gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + 'aa' + '_' + gene + '.fasta')
+                with open(gene_file, 'w') as fasta_out:
+                    for locus in species[gene_locus][gene]:
+                        locus_url = f'http://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
+                        write_out = False
+                        lines = [p.decode('utf-8') for p in urllib.request.urlopen(locus_url)]
+                        headers = [k for k,p in enumerate(lines) if p.startswith('>')]
+                        end_index = [k for k,p in enumerate(lines) if p.startswith('\r')]
+                        for header_idx in range(0, len(headers)):
+                            idx = headers[header_idx]
+                            header = lines[headers[header_idx]]
+                            ls = header.strip().split('|')
+                            if species['imgt_name'].replace('_', ' ') in ls[2]:
+                                fasta_out.write('>' + ls[1] + '\n')
+                                if header_idx+1 < len(headers):
+                                    block = lines[headers[header_idx]+1:headers[header_idx+1]]
+                                else:
+                                    end = min([(k, k-idx) for k in end_index if k-idx > 0], key = lambda x:x[1])[0]
+                                    block = lines[headers[header_idx]+1:end]
+                                sequence = ''.join([p.strip('\n').replace('.','') for p in block])
+                                fasta_out.write(sequence+'\n')
+
+                                      
                 result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'prot', '-hash_index', '-parse_seqids',
                      '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              universal_newlines=True)
