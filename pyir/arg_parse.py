@@ -554,7 +554,7 @@ class PyIrArgumentParser():
             if not args.germlineC:
                 args.germlineC = os.path.join(pathbase, args.species + '_' + suffix + '_C')
         else:
-            pathbase = os.path.join(args.igdata, 'prot', args.species)
+            pathbase = os.path.join(args.igdata, args.receptor, args.species)
             if not args.germlineV:
                 args.germlineV = os.path.join(pathbase, args.species + '_V')
             if not args.germlineD:
