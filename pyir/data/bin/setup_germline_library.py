@@ -264,6 +264,7 @@ def get_imgt_data():
 
                 print(result.stdout)
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + 'aa' + '_' + gene + '.fasta')
+                imgt_name = species['imgt_name'].replace('_','+')
                 with open(gene_file, 'w') as fasta_out:
                     for locus in species[gene_locus][gene]:
                         locus_url = f'http://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
