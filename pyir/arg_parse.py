@@ -435,9 +435,9 @@ class PyIrArgumentParser():
         if arguments.sequence_type == 'prot' and not arguments.legacy:
             raise argparse.ArgumentTypeError("Sequence type set to protein but --legacy flag not set. Set --legacy "
                                              "flag to analyze protein sequences")
-        elif arguments.sequence_type == 'prot' and arguments.species != 'human':
-            raise argparse.ArgumentTypeError("Sequence type set to protein but species is not human. Set -s "
-                                             "flag to human")
+      #  elif arguments.sequence_type == 'prot' and arguments.species != 'human':
+      #      raise argparse.ArgumentTypeError("Sequence type set to protein but species is not human. Set -s "
+      #                                       "flag to human")
 
 
         return arguments.__dict__
