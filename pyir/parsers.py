@@ -711,7 +711,7 @@ class AirrParser():
                     self.out_keys.extend([self.args['additional_field'][0]])
 
                 # Add PyIR fields to the keys at the end
-                self.out_keys.extend(['v_family', 'd_family', 'j_family', 'c_family', 'cdr3_aa_length'])
+                self.out_keys.extend(['v_family', 'd_family', 'j_family', 'cdr3_aa_length'])
 
                 if self.args['outfmt'] == 'tsv':
                     self.out_file.write('\t'.join(self.out_keys) + '\n')
@@ -734,7 +734,7 @@ class AirrParser():
                 d['v_family'] = d['v_call'].split(',')[0].split('*')[0]
                 d['d_family'] = d['d_call'].split(',')[0].split('*')[0]
                 d['j_family'] = d['j_call'].split(',')[0].split('*')[0]
-                d['c_family'] = d['c_call'].split(',')[0].split('*')[0]
+             #   d['c_family'] = d['c_call'].split(',')[0].split('*')[0]
                 d['cdr3_aa_length'] = len(d['cdr3_aa'])
 
                 # FR4 check
