@@ -20,9 +20,9 @@ SPECIES = [{
         'D': ['IGHD'],
     },
     'tcr': {
-        'V': ['TRAV', 'TRBV'],
-        'J': ['TRAJ', 'TRBJ'],
-        'D': ['TRBD']
+        'V': ['TRAV', 'TRBV', 'TRGV', 'TRDV'],
+        'J': ['TRAJ', 'TRBJ', 'TRGJ', 'TRDJ'],
+        'D': ['TRBD','TRDD']
     }
 }, {
     'name': 'shark',
