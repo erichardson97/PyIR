@@ -238,6 +238,7 @@ def get_imgt_data():
                 pass
 
             for gene in species[gene_locus]:
+                seen = set()
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + gene_file_ext + '_' + gene + '.fasta')
                 gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
                 with open(gene_file, 'w') as fasta_out:
@@ -250,8 +251,12 @@ def get_imgt_data():
                             line = line.decode('utf-8')
                             if line[0] == '>':
                                 ls = line.strip().split('|')
+                                if ls[1] in seen:
+                                    write_out = False
+                                    continue
                                 if species['imgt_name'].replace('_',' ') in ls[2]:
                                     fasta_out.write('>' + ls[1] + '\n')
+                                    seen.add(ls[1])
                                     write_out = True
                                 else:
                                     write_out = False
@@ -266,6 +271,7 @@ def get_imgt_data():
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + 'aa' + '_' + gene + '.fasta')
                 gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
                 imgt_name = species['imgt_name'].replace('_','+')
+                seen = set()
                 with open(gene_file, 'w') as fasta_out:
                     for locus in species[gene_locus][gene]:
                         locus_url = f'http://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
@@ -277,6 +283,8 @@ def get_imgt_data():
                             idx = headers[header_idx]
                             header = lines[headers[header_idx]]
                             ls = header.strip().split('|')
+                            if ls[1] in seen:
+                                continue
                             if species['imgt_name'].replace('_', ' ') in ls[2]:
                                 fasta_out.write('>' + ls[1] + '\n')
                                 if header_idx+1 < len(headers):
@@ -286,7 +294,7 @@ def get_imgt_data():
                                     block = lines[headers[header_idx]+1:end]
                                 sequence = ''.join([p.strip('\n').replace('.','') for p in block])
                                 fasta_out.write(sequence+'\n')
-
+                                seen.add(ls[1])
                                       
                 result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'prot', '-hash_index', '-parse_seqids',
                      '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
