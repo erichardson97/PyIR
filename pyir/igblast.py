@@ -74,6 +74,9 @@ class IgBlastRun():
         if args['reward']:
             self.collected_args.extend(['-reward', args['reward']])
 
+        if args['internal_data']:
+            self.collected_args.extend(['-custom_internal_data', args['internal_data']])
+            
         self.collected_args.append('-query')
 
         if self.args['debug']:
