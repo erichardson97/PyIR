@@ -206,6 +206,14 @@ class PyIrArgumentParser():
         )
 
         blast_arguments.add_argument(
+            '--internal_data',
+            type=str,
+            dest='internal_data',
+            help="Path to a custom .ndm file to use with custom database.",
+            default=None,
+        )
+
+        blast_arguments.add_argument(
             '--aux',
             type=str,
             dest='aux',
