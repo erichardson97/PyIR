@@ -178,8 +178,9 @@ SPECIES = [{
 parser = argparse.ArgumentParser()
 parser.add_argument('basedir')
 parser.add_argument('outdir')
-parser.add_argument('overwrite', default = False, type = bool)
+parser.add_argument('overwrite', default = "False")
 args = parser.parse_args()
+args.overwrite = eval(args.overwrite)
 
 
 if 'linux' in sys.platform:
@@ -214,6 +215,7 @@ def get_local_data():
     tcr_c_db = path.join(path.dirname(tcr_c_file), path.basename(tcr_c_file).split('.')[0])
 
     shutil.copy2(path.join(args.basedir, 'crowelab_data', 'human_TCR_C.fasta'), tcr_c_file)
+    print('here')
     result = run(
         [path.join(args.basedir, 'bin', 'makeblastdb_' + platform), '-dbtype', 'nucl', '-hash_index', '-parse_seqids',
          '-in', tcr_c_file, '-out', tcr_c_db, '-title', tcr_c_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -221,13 +223,13 @@ def get_local_data():
     print(result.stdout)
 
     try:
-        os.remove(path.join(args.outdir, 'prot'))
+        shutil.rmtree(path.join(args.outdir, 'prot'))
     except FileNotFoundError:
         pass
     shutil.copytree(path.join(args.basedir,'crowelab_data','prot'), path.join(args.outdir, 'prot'))
 
 def get_imgt_data():
-   
+    print('Downloading IMGT data.')
     for species in SPECIES:
         for gene_locus in ['ig', 'tcr']:
             outdir_subfolder = 'Ig' if gene_locus == 'ig' else 'TCR'
