@@ -178,8 +178,9 @@ SPECIES = [{
 parser = argparse.ArgumentParser()
 parser.add_argument('basedir')
 parser.add_argument('outdir')
-parser.add_argument('overwrite', default = False)
+parser.add_argument('overwrite', default = False, type = bool)
 args = parser.parse_args()
+
 
 if 'linux' in sys.platform:
     platform = 'linux'
