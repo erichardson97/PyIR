@@ -10,6 +10,9 @@ from subprocess import run
 import shutil
 
 
+proxy = urllib.request.ProxyHandler({'http': '127.0.0.1'})
+opener = urllib.request.build_opener(proxy)
+urllib.request.install_opener(opener)
 
 SPECIES = [{
     'name': 'human',
@@ -246,10 +249,12 @@ def get_imgt_data():
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + gene_file_ext + '_' + gene + '.fasta')
                 gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
                 if not os.path.exists(gene_file) | (args.overwrite):
+                    print('Here:)')
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
                             locus_url = 'http://www.imgt.org/download/V-QUEST/IMGT_V-QUEST_reference_directory/' + \
                                         species['imgt_name'] + '/' + locus_url_ext + '/' + locus + '.fasta'
+                            
                             print('Downloading from:', locus_url)
                             write_out = False
                             for line in urllib.request.urlopen(locus_url):
