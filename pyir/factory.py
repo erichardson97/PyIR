@@ -99,7 +99,7 @@ class PyIR():
         baseArgs = [sys.executable, pkg_resources.resource_filename(pkg_resources.Requirement.parse("crowelab_pyir"),
                                                     "crowelab_pyir/data/bin/setup_germline_library.py"),
                     pkg_resources.resource_filename(pkg_resources.Requirement.parse("crowelab_pyir"), "crowelab_pyir/data"),
-                    self.output_folder]
+                    self.output_folder, False]
 
         subprocess.run(baseArgs)
 
