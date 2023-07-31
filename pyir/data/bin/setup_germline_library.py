@@ -9,11 +9,6 @@ import subprocess
 from subprocess import run
 import shutil
 
-
-proxy = urllib.request.ProxyHandler({'http': '127.0.0.1'})
-opener = urllib.request.build_opener(proxy)
-urllib.request.install_opener(opener)
-
 SPECIES = [{
     'name': 'human',
     'imgt_name': 'Homo_sapiens',
@@ -248,7 +243,7 @@ def get_imgt_data():
                 seen = set()
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + gene_file_ext + '_' + gene + '.fasta')
                 gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
-                if not os.path.exists(gene_file) | (args.overwrite):
+                if (not os.path.exists(gene_file)) | (args.overwrite):
                     print('Here:)')
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
@@ -280,7 +275,7 @@ def get_imgt_data():
                 gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
                 imgt_name = species['imgt_name'].replace('_','+')
                 seen = set()
-                if not os.path.exists(gene_file) | (args.overwrite):
+                if (not os.path.exists(gene_file)) | (args.overwrite):
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
                             locus_url = f'http://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
