@@ -247,7 +247,7 @@ def get_imgt_data():
                     print('Here:)')
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
-                            locus_url = 'http://www.imgt.org/download/V-QUEST/IMGT_V-QUEST_reference_directory/' + \
+                            locus_url = 'https://www.imgt.org/download/V-QUEST/IMGT_V-QUEST_reference_directory/' + \
                                         species['imgt_name'] + '/' + locus_url_ext + '/' + locus + '.fasta'
                             
                             print('Downloading from:', locus_url)
@@ -278,7 +278,7 @@ def get_imgt_data():
                 if (not os.path.exists(gene_file)) | (args.overwrite):
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
-                            locus_url = f'http://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
+                            locus_url = f'https://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
                             write_out = False
                             lines = [p.decode('utf-8') for p in urllib.request.urlopen(locus_url)]
                             headers = [k for k,p in enumerate(lines) if p.startswith('>')]
