@@ -1,5 +1,6 @@
 #!/bin/python3
-
+import time
+import requests
 import os
 import sys
 from os import path
@@ -249,7 +250,7 @@ def get_imgt_data():
                         for locus in species[gene_locus][gene]:
                             locus_url = 'https://www.imgt.org/download/V-QUEST/IMGT_V-QUEST_reference_directory/' + \
                                         species['imgt_name'] + '/' + locus_url_ext + '/' + locus + '.fasta'
-                            
+                            time.sleep(5)
                             print('Downloading from:', locus_url)
                             write_out = False
                             for line in urllib.request.urlopen(locus_url):
@@ -267,6 +268,7 @@ def get_imgt_data():
                                         write_out = False
                                 elif write_out:
                                     fasta_out.write(line.replace('.',''))
+                            print(f'Finished downloading from {locus_url}.')
                 ## aas.
                 result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'nucl', '-hash_index', '-parse_seqids',
                      '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -278,11 +280,34 @@ def get_imgt_data():
                 if (not os.path.exists(gene_file)) | (args.overwrite):
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
-                            locus_url = f'https://www.imgt.org/IMGT_GENE-DB/GENElect?query=7.3+{locus}&species={imgt_name}'
+                            if 'V' not in locus:
+                                continue
+                            time.sleep(5)
+                            locus_url = f'https://www.imgt.org/genedb/GENElect?query=7.3+{locus}&species={imgt_name}'
                             write_out = False
+                            print(f'Downloading from {locus_url}')
+                            #wait = 10
+                            #n_tries = 5
+                            #success = False
+                            #for attempt in range(n_tries):
+                            #    print(f'Attempt {attempt}.')
+                            #    try:
+                            #        lines = requests.get(locus_url, timeout=wait)
+                            #        lines.raise_for_status()
+                            #        lines = lines.text
+                            #        success = True
+                            #        break
+                            #    except:
+                            #        time.sleep(5)
+                            #if success is False:
+                            #    print(f'Unable to download {locus}.')
+                            #    continue
                             lines = [p.decode('utf-8') for p in urllib.request.urlopen(locus_url)]
                             headers = [k for k,p in enumerate(lines) if p.startswith('>')]
-                            end_index = [k for k,p in enumerate(lines) if p.startswith('\r')]
+                            final_line = [i for i,p in enumerate(lines) if '</pre>' in p][-1]
+                            print(headers, final_line)
+                            end_index = [headers[i+1]-1 if i+1 < len(headers) else final_line for i in range(len(headers))  ]
+                            print(headers, end_index)
                             for header_idx in range(0, len(headers)):
                                 idx = headers[header_idx]
                                 header = lines[headers[header_idx]]
@@ -300,6 +325,7 @@ def get_imgt_data():
                                     sequence = ''.join([p.strip('\n').replace('.','') for p in block])
                                     fasta_out.write(sequence+'\n')
                                     seen.add(ls[1])
+                            print(f'Finished downloading from {locus_url}')
                                           
                 result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'prot', '-hash_index', '-parse_seqids',
                      '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
