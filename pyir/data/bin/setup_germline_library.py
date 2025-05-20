@@ -214,13 +214,11 @@ def get_local_data():
     tcr_c_db = path.join(path.dirname(tcr_c_file), path.basename(tcr_c_file).split('.')[0])
 
     shutil.copy2(path.join(args.basedir, 'crowelab_data', 'human_TCR_C.fasta'), tcr_c_file)
-    print('here')
     result = run(
         [path.join(args.basedir, 'bin', 'makeblastdb_' + platform), '-dbtype', 'nucl', '-hash_index', '-parse_seqids',
          '-in', tcr_c_file, '-out', tcr_c_db, '-title', tcr_c_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         universal_newlines=True)
     print(result.stdout)
-
     try:
         shutil.rmtree(path.join(args.outdir, 'prot'))
     except FileNotFoundError:
@@ -245,7 +243,6 @@ def get_imgt_data():
                 gene_file = path.join(args.outdir, outdir_subfolder, species['name'], species['name'] + '_' + gene_file_ext + '_' + gene + '.fasta')
                 gene_db = path.join(path.dirname(gene_file), path.basename(gene_file).split('.')[0])
                 if (not os.path.exists(gene_file)) | (args.overwrite):
-                    print('Here:)')
                     with open(gene_file, 'w') as fasta_out:
                         for locus in species[gene_locus][gene]:
                             locus_url = 'https://www.imgt.org/download/V-QUEST/IMGT_V-QUEST_reference_directory/' + \
@@ -305,9 +302,7 @@ def get_imgt_data():
                             lines = [p.decode('utf-8') for p in urllib.request.urlopen(locus_url)]
                             headers = [k for k,p in enumerate(lines) if p.startswith('>')]
                             final_line = [i for i,p in enumerate(lines) if '</pre>' in p][-1]
-                            print(headers, final_line)
                             end_index = [headers[i+1]-1 if i+1 < len(headers) else final_line for i in range(len(headers))  ]
-                            print(headers, end_index)
                             for header_idx in range(0, len(headers)):
                                 idx = headers[header_idx]
                                 header = lines[headers[header_idx]]
@@ -325,7 +320,7 @@ def get_imgt_data():
                                     sequence = ''.join([p.strip('\n').replace('.','') for p in block])
                                     fasta_out.write(sequence+'\n')
                                     seen.add(ls[1])
-                            print(f'Finished downloading from {locus_url}')
+                            print(f'Finished downloading from {locus_url}.')
                                           
                 result = run([path.join(args.basedir,'bin','makeblastdb_' + platform), '-dbtype', 'prot', '-hash_index', '-parse_seqids',
                      '-in', gene_file, '-out', gene_db, '-title', gene_db], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -333,9 +328,7 @@ def get_imgt_data():
 
                 print(result.stdout)
                 
-                
-                
-                
+                                
 
 get_local_data()
 get_imgt_data()
