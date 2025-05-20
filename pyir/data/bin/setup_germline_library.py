@@ -247,7 +247,6 @@ def get_imgt_data():
                         for locus in species[gene_locus][gene]:
                             locus_url = 'https://www.imgt.org/download/V-QUEST/IMGT_V-QUEST_reference_directory/' + \
                                         species['imgt_name'] + '/' + locus_url_ext + '/' + locus + '.fasta'
-                            time.sleep(5)
                             print('Downloading from:', locus_url)
                             write_out = False
                             for line in urllib.request.urlopen(locus_url):
@@ -279,7 +278,6 @@ def get_imgt_data():
                         for locus in species[gene_locus][gene]:
                             if 'V' not in locus:
                                 continue
-                            time.sleep(5)
                             locus_url = f'https://www.imgt.org/genedb/GENElect?query=7.3+{locus}&species={imgt_name}'
                             write_out = False
                             print(f'Downloading from {locus_url}')
